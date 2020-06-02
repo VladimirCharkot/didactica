@@ -1,0 +1,128 @@
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        
+    * {
+        padding: 0;
+        margin: 0;
+    }
+        
+    .pixel{
+        align-self: stretch;
+        background-color: white;
+        border: 1px solid black;
+    }
+    
+    .tortuga {
+        position: absolute;
+    }
+    
+    #dibugrid{
+        display: grid;
+        border: 3px solid black;
+        width: min-content;
+    }
+    
+    #base{
+        
+    }
+    
+    </style>
+
+
+    
+</head>
+
+<body>
+
+    
+    <div id="base">
+        <div id="controles"></div>
+        <div id="dibugrid"></div>
+    </div>
+    
+    <script>
+        /*   this.classList.remove('bad');
+         this.classList.add('good');*/
+    
+        var ancho_ventana = Math.min(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        var alto_ventana  = Math.min(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    
+        var alto = 30;
+        var ancho = 40;
+        var sz = 15;
+        
+        var dibugrid = document.querySelector('#dibugrid');
+        dibugrid.style.gridTemplateRows    = 'repeat(' + alto + ',' + sz + 'px)';
+        dibugrid.style.gridTemplateColumns = 'repeat(' + ancho + ',' + sz + 'px)';
+        
+        for (var i=0; i < ancho*alto; i++){
+            var pixel = document.createElement('div');
+            pixel.classList.add('pixel');
+            dibugrid.appendChild(pixel);
+        }
+    
+        // Crear tortuga,
+        var tortuga = document.createElement('div');
+        tortuga.classList.add('tortuga');
+        tortuga.style.backgroundColor = 'rgb(0,255,0, 0.3)';
+        
+        // darle tamaño adecuado
+        var tortuga_padding = 3;
+        tortuga.style.width = (sz - tortuga_padding * 2) + 'px';
+        tortuga.style.height = (sz - tortuga_padding * 2) + 'px';
+        
+        // colocarla en el medio de la primera celda,
+        var grid_margin = 3;
+        tortuga.style.top = grid_margin + tortuga_padding;
+        tortuga.style.left = grid_margin + tortuga_padding;
+        
+        document.body.appendChild(tortuga);
+        
+        // sus coordenadas
+        var tortuga_fila = 0;
+        var tortuga_columna = 0;
+        
+        // colorea el pixel en (colu, fila)
+        function colorear(colu, fila){
+            console.log("color");
+            console.log(dibugrid.children[fila * ancho + colu]);
+            dibugrid.children[fila * ancho + colu].style.backgroundColor = 'black';
+        }
+        
+        function read_key(e){
+            console.log(e);
+            console.log(` ${e.code}`);
+            
+            if (e.key == 'Escape'){
+                // limpio todo
+                for (var i = 0; i < hijos.length; i++) {
+                    dibugrid.children[i].style.backgroundColor = 'white';
+                }
+                
+            }
+            
+            if (e.key == 'ArrowRight')
+                tortuga_columna = tortuga_columna + 1;
+            if (e.key == 'ArrowLeft')
+                tortuga_columna = tortuga_columna - 1;
+            if (e.key == 'ArrowDown')
+                tortuga_fila = tortuga_fila + 1;
+            if (e.key == 'ArrowUp')
+                tortuga_fila = tortuga_fila - 1;
+                
+            if (e.key == ' ')
+                colorear(tortuga_columna, tortuga_fila);
+            
+            tortuga.style.translate = (tortuga_columna * sz) + 'px ' + (tortuga_fila * sz) + 'px';
+         
+        }
+    
+        window.onkeyup = read_key;
+    
+        
+    </script>
+    
+    
+</body>
